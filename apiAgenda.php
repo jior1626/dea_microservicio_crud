@@ -1,4 +1,5 @@
 <?php
+header("Access-Control-Allow-Origin: *");
 // apiAgenda.php
 include 'Database.php';
 include 'Agenda.php';

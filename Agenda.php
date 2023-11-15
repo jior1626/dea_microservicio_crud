@@ -62,11 +62,12 @@ class Agenda {
         return $stmt->execute(['id' => $id]);
     }
 
-    // Función para obtener los campos de la tabla
+    // Función para obtener los campos de la tabla para PostgreSQL
     public function getFields() {
-        $stmt = $this->conn->prepare("DESCRIBE $this->table_name");
-        $stmt->execute();
+        $stmt = $this->conn->prepare("SELECT column_name FROM information_schema.columns WHERE table_name = :table_name");
+        $stmt->execute(['table_name' => $this->table_name]);
         return $stmt->fetchAll(PDO::FETCH_COLUMN);
     }
+
 }
 ?>

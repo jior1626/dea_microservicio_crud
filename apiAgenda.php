@@ -1,5 +1,5 @@
 <?php
-//api.php
+// apiAgenda.php
 include 'Database.php';
 include 'Agenda.php';
 
@@ -15,9 +15,16 @@ $method = $_SERVER['REQUEST_METHOD'];
 try {
     switch ($method) {
         case 'GET':
-            $id = $_GET['id'] ?? null;
-            $result = $dea->read($id);
-            echo json_encode($result);
+            // Verifica si se solicita obtener los nombres de los campos
+            if (isset($_GET['fields'])) {
+                $result = $dea->getFields();
+                echo json_encode($result);
+            } else {
+                // Manejo del GET para leer registros
+                $id = $_GET['id'] ?? null;
+                $result = $dea->read($id);
+                echo json_encode($result);
+            }
             break;
 
         case 'POST':
@@ -30,9 +37,9 @@ try {
             } else {
                 // Los datos son válidos, continúa con el procesamiento.
                 if ($dea->create($data)) {
-                    echo json_encode(['message' => 'dea creado']);
+                    echo json_encode(['message' => 'Registro creado']);
                 } else {
-                    throw new Exception('Error al crear dea');
+                    throw new Exception('Error al crear el registro');
                 }
             }
             break;
@@ -47,9 +54,9 @@ try {
             } else {
                 // Los datos son válidos, continúa con el procesamiento.
                 if ($dea->update($data)) {
-                    echo json_encode(['message' => 'dea actualizado']);
+                    echo json_encode(['message' => 'Registro actualizado']);
                 } else {
-                    throw new Exception('Error al actualizar dea');
+                    throw new Exception('Error al actualizar el registro');
                 }
             }
             break;
@@ -57,9 +64,9 @@ try {
         case 'DELETE':
             $id = $_GET['id'];
             if ($dea->delete($id)) {
-                echo json_encode(['message' => 'dea eliminado']);
+                echo json_encode(['message' => 'Registro eliminado']);
             } else {
-                throw new Exception('Error al eliminar dea');
+                throw new Exception('Error al eliminar el registro');
             }
             break;
 

@@ -61,5 +61,12 @@ class Agenda {
         $stmt = $this->conn->prepare("DELETE FROM $this->table_name WHERE id = :id");
         return $stmt->execute(['id' => $id]);
     }
+
+    // Función para obtener los campos de la tabla
+    public function getFields() {
+        $stmt = $this->conn->prepare("DESCRIBE $this->table_name");
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_COLUMN);
+    }
 }
 ?>
